@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { UserController } from './controllers/userController';
+const userController = new UserController();
 
 const routes = Router();
 
@@ -7,7 +9,6 @@ routes.get('/users', (req, res) =>
 );
 
 routes.post('/users', (req, res) => {
-  console.log(req);
-  return res.json({ message: 'Dados enviados com sucesso !' });
+  userController.create(req, res);
 });
 export default routes;
