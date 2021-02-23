@@ -1,4 +1,6 @@
+import 'reflect-metadata';
 import express from 'express';
+import './database';
 import Routes from './routes';
 import bodyparser from 'body-parser';
 const app = express();
