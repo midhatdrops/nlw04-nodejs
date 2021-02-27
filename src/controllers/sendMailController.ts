@@ -6,7 +6,6 @@ import { UsersRepository } from '../repositories/userRepository';
 import SendMailService from '../services/SendMailService';
 import path from 'path';
 import dotenv from 'dotenv';
-import { sign } from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -36,13 +35,6 @@ class SendMailController {
       relations: ['user', 'survey'],
     });
 
-    //jwt
-    //prettier-ignore
-    const token = await sign({
-      id: userAlreadyExists.id}, process.env.AUTH_SECRET, {
-      expiresIn: '1d'
-    });
-
     const npsPath = path.resolve(
       __dirname,
       '..',
@@ -51,12 +43,17 @@ class SendMailController {
       'NPSMail.hbs'
     );
 
+    const surveyUser = surveysUsersRepository.create({
+      user_id: userAlreadyExists.id,
+      survey_id: surveyAlreadyExists.id,
+    });
+
     const body = {
       name: userAlreadyExists.name,
       title: surveyAlreadyExists.title,
       description: surveyAlreadyExists.description,
       link: process.env.URL_MAIL,
-      user_token: token,
+      user_id: userAlreadyExists.id,
     };
 
     if (surveyUserAlreadyExists) {
@@ -68,10 +65,6 @@ class SendMailController {
       );
       return res.json(surveyUserAlreadyExists);
     }
-    const surveyUser = surveysUsersRepository.create({
-      user_id: userAlreadyExists.id,
-      survey_id: surveyAlreadyExists.id,
-    });
 
     await surveysUsersRepository.save(surveyUser);
 
