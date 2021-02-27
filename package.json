@@ -14,14 +14,15 @@
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",
     "typeorm": "^0.2.31",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "production": "node ./build/transpile/src/server.js",
     "build": "tsc",
     "dev": "ts-node-dev --ignore-watch node_modules --transpile-only ./src/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
-    "test": "cross-env-shell NODE_ENV=test jest",
+    "test": "cross-env-shell NODE_ENV=test jest -i",
     "posttest": "rimraf ./src/database/database.test.sqlite "
   },
   "devDependencies": {
